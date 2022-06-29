@@ -5,6 +5,8 @@
 
  ## Funcionamento:
 
+![Funcionamento do NodeJS](./NDJS.png)
+
  ## Entrada saida
 
   - Stdout
