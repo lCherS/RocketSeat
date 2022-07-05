@@ -60,7 +60,7 @@ app.get('/statement/', VerifyExistsACcountCPF, (req, res) => {
   //  const { cpf } = req.headers; // ao invez de usar params, podemos utilizar o headers
   const { customer } = req;
 
-  return res.send(customer);
+  return res.send(customer.statement);
 })
 
 app.post('/deposit',VerifyExistsACcountCPF, (req, res) => {
@@ -99,6 +99,54 @@ app.post('/withdraw', VerifyExistsACcountCPF, (req, res) => {
   customer.statement.push(statementOperation);
 
   return res.status(201).send("WithDraw Sucessfully.")
+})
+
+app.get('/statement/date', VerifyExistsACcountCPF, (req, res) => {
+  //  const { cpf } = req.params;
+  //  const { cpf } = req.headers; // ao invez de usar params, podemos utilizar o headers
+  const { customer } = req;
+  const { date } = req.query;
+
+  const dateFormat = new Date(date + " 00:00");
+  const statement = customer.statement.filter(
+    statement => 
+      statement.create_at.toDateString() === new Date(dateFormat).toDateString());
+
+  return res.send(statement);
+})
+
+app.put("/account", VerifyExistsACcountCPF, (req, res) => {
+  const { name } = req.body;
+  const { customer } = req;
+
+  customer.name = name;
+
+  return res.status(201).send(name);
+})
+
+app.get('/account', VerifyExistsACcountCPF, (req, res) => {
+  //  const { cpf } = req.params;
+  //  const { cpf } = req.headers; // ao invez de usar params, podemos utilizar o headers
+  const { customer } = req;
+
+  return res.send(customer);
+})
+
+app.delete('/account', VerifyExistsACcountCPF, (req, res) => {
+  const { customer } = req;
+
+  customers.splice(customer, 1);
+
+  return res.status(204).send('Removido com sucesso')
+
+})
+
+app.get('/balance', VerifyExistsACcountCPF, (req, res) => {
+  const { customer } = req;
+
+  const balance = getBalance(customer.statement);
+
+  return res.json(balance)
 })
 
 app.listen(3333);
