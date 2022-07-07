@@ -33,6 +33,14 @@
           "regex": "^I[A-Z]",
           "match": true
         }
+      },
+      {
+        "selector": "type",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^T[A-Z]",
+          "match": true
+        }
       }
     ],
     "class-methods-use-this": "off",
