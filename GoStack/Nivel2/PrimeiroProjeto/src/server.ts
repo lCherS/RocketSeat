@@ -1,11 +1,12 @@
 import express from 'express';
+import routes from './routes/index';
 
 const app = express();
 
-app.get('/', (req, res) => {
-  return res.json({message: 'aplicação iniciada'})
-})
+app.use(express.json())
 
-app.listen(3333, () => { 
+app.use('/', routes);
+
+app.listen(3333, () => {
   console.log('aplicação iniciada')
 })
