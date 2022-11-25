@@ -7,7 +7,7 @@ interface CreateAppointmentDTO {
 
 import Appointment from "../models/appointment";
 
-class ApppointmentsRepository {
+class AppointmentsRepository {
   private appointment: Appointment[];
 
   constructor() {
@@ -28,7 +28,7 @@ class ApppointmentsRepository {
 
   public create({ provider, date }: CreateAppointmentDTO): Appointment {
 
-    const appointment = new Appointment(provider, date);
+    const appointment = new Appointment({ provider, date });
 
     this.appointment.push(appointment);
 
@@ -36,4 +36,4 @@ class ApppointmentsRepository {
   }
 }
 
-export default ApppointmentsRepository;
+export default AppointmentsRepository;

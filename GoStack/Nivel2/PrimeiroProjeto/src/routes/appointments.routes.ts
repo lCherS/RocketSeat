@@ -2,27 +2,27 @@ import { Router } from "express";
 import { startOfHour, parseISO } from 'date-fns';
 
 import AppointmentsRepository from "../repositories/appointmentsRepositories";
+import CreateAppointmentService from "../services/CreateAppointmentService";
+
 const appointmentsRepository = new AppointmentsRepository();
+
+// Uma rota deve apenas ser responsavel por receber os dados, chamar outro arquivo para tratar, e devolver uma resposta
 
 const appointmentsRouter = Router();
 
 appointmentsRouter.post('/', (req, res) => {
-  const { provider, date } = req.body;
+  try {
+    const { provider, date } = req.body;
 
-  const parsedDate = startOfHour(parseISO(date));
+    const parseDate = parseISO(date);
 
-  const findAppointmentInSameDate = appointmentsRepository.findByDate(parsedDate);
+    const createAppointment = new CreateAppointmentService(appointmentsRepository);
+    const appointment = createAppointment.execute({ provider, date: parseDate });
 
-  if (findAppointmentInSameDate) {
-    return res.status(400).json({
-      message: 'Appointment already exists'
-    })
+    return res.json(appointment);
+  } catch (e) {
+    return res.status(400).json({ error: e.message })
   }
-
-  const appointment = appointmentsRepository.create({ provider, date: parsedDate })
-
-  return res.json(appointment);
-
 })
 
 appointmentsRouter.get('/', (req, res) => {
