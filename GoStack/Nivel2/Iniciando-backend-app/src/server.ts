@@ -1,12 +1,26 @@
 import express from 'express';
 import routes from './routes/index';
 
-const app = express();
+import { AppDataSource } from './database';
 
-app.use(express.json())
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+    const app = express();
+    app.use(express.json())
 
-app.use('/', routes);
+    app.use('/', routes);
+    app.get('/', (req, res) => {
+      res.send('Hello World!');
+    })
 
-app.listen(3333, () => {
-  console.log('aplicação iniciada')
-})
+    app.listen(3333, () => {
+      console.log('aplicação iniciada')
+    })
+
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err)
+  })
+
+
