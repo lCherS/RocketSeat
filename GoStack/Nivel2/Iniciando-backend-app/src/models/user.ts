@@ -11,7 +11,7 @@ class User {
   @Column()
   password: string;
 
-  @Column('timestamp')
+  @Column()
   email: string;
 
   @CreateDateColumn()

@@ -21,6 +21,8 @@ usersRouter.post('/', async (req, res) => {
       password
     })
 
+    delete user.password;
+
     return res.json(user);
   } catch (e: any) {
     return res.status(400).json({ error: e.message })
