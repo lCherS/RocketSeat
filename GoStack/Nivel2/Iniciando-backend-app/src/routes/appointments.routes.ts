@@ -5,9 +5,11 @@ import { parseISO } from 'date-fns';
 import AppointmentsRepository from "../repositories/appointmentsRepositories";
 import CreateAppointmentService from "../services/CreateAppointmentService";
 
+import ensureAuthenticated from "../middlewares/ensureAuthenticated";
 // Uma rota deve apenas ser responsavel por receber os dados, chamar outro arquivo para tratar, e devolver uma resposta
 
 const appointmentsRouter = Router();
+appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get('/', async (req, res) => {
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);
