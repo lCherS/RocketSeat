@@ -5,6 +5,8 @@ import multer from 'multer';
 
 import uploadConfig from "../config/upload";
 import CreateUserService from "../services/CreateUserService";
+import UpdateUserAvatarService from "../services/UpdateUserAvatarService";
+
 import ensureAuthenticated from "../middlewares/ensureAuthenticated";
 
 // Uma rota deve apenas ser responsavel por receber os dados, chamar outro arquivo para tratar, e devolver uma resposta
@@ -34,9 +36,23 @@ usersRouter.post('/', async (req, res) => {
 
 usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async (req, res) => {
 
+try {
+  const updateUserAvatar = new UpdateUserAvatarService();
 
+  const user = await updateUserAvatar.execute({
+    user_id: req.user.id,
+    avatarFilename: req.file.filename
+  })
 
-  return res.json({ ok: true})
+  delete user.password;
+
+  return res.json({user})
+
+} catch(err) {
+  return res.json({ error: err.message})
+
+}
+
 })
 
 export default usersRouter;
