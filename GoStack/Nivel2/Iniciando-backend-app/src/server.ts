@@ -5,13 +5,14 @@ import routes from './routes/index';
 
 import './database';
 
-const app = express();
-app.use(express.json())
+import uploadConfig from './config/upload';
 
-app.use('/', routes);
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-})
+const app = express();
+
+app.use(express.json())
+app.use('/files', express.static(uploadConfig.directory));
+app.use(routes);
+
 
 app.listen(3333, () => {
   console.log('aplicação iniciada')
