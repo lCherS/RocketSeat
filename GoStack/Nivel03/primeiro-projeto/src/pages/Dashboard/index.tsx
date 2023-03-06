@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
 import {Title, Form, Repositories, Error} from './styles'
@@ -6,10 +6,6 @@ import {Title, Form, Repositories, Error} from './styles'
 import api from '../../services/api';
 
 const logoImg = 'https://xesque.rocketseat.dev/platform/1587379765556-attachment.svg'
-const Dashboard: React.FC = () => {
-const [newRepo, setNewRepo] = useState('')
-const [inputError, setInputError] = useState('')
-const [repositories, setRepositories] = useState<Repository[]>([])
 
 interface Repository {
   full_name: string;
@@ -21,6 +17,23 @@ interface Repository {
   }
 }
 
+const Dashboard: React.FC = () => {
+const [newRepo, setNewRepo] = useState('')
+const [inputError, setInputError] = useState('')
+const [repositories, setRepositories] = useState<Repository[]>(() => {
+  const storagedRepositories = localStorage.getItem('@GithubExplorer:repositories');
+
+  if(storagedRepositories) {
+    return JSON.parse(storagedRepositories)
+  } else {
+    return [];
+  }
+  })
+
+
+useEffect(() => {
+  localStorage.setItem('@GithubExplorer:repositories', JSON.stringify(repositories))
+}, [repositories])
 async function handleAddRepository(event:FormEvent) {
   //adição de um novo rpeositorio
   // Consumir APi do GitHub
