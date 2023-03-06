@@ -1,7 +1,13 @@
 import React from 'react';
+import { matchRoutes, useMatch, useResolvedPath, useLocation, useParams } from 'react-router-dom';
 
-const Repository: React.FC = () => {
-  return <h1>Repository</h1>
+interface RepositoryParams {
+  repository: string;
 }
 
-export default Repository;
+const Repositories: React.FC = () => {
+  const repository = useLocation().pathname.replace('/repositories', '');
+  return (<h1>Repository: {repository}</h1>)
+}
+
+export default Repositories;
