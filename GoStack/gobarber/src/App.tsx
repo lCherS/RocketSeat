@@ -8,8 +8,8 @@ import SignUp from './pages/Singup';
 function App() {
   return (
     <>
-    {/* <SignIn /> */}
-    <SignUp />
+    <SignIn />
+    {/* <SignUp /> */}
     <GlobalStyle />
     </>
   );
